@@ -17,8 +17,29 @@ An online tea shop. Customers browse, filter and order tea and leave reviews. St
 ```
 frontend/   HTML pages, css/, js/, img/   (Phase 3 Task B, done)
 backend/    Express server and routes (not started)
-db/         create.sql, load.sql, data/*.csv   (Phase 3 Task C, to add)
+db/         Phase 3 Task C
+  create.sql        creates the leaf_and_brew database and all tables
+  load.sql          loads data/*.csv into the tables
+  generate_data.py  writes the dummy CSVs (fixed seed, stdlib only)
+  data/*.csv        one CSV per table
 ```
+
+## Database setup
+
+From the `db/` folder (MySQL 8.0.16+):
+
+```bash
+mysql --local-infile=1 -u root -p < create.sql
+```
+
+```bash
+mysql --local-infile=1 -u root -p < load.sql
+```
+
+If LOCAL INFILE is refused, run `SET GLOBAL local_infile = 1;` as root first. To regenerate the CSVs: `python3 db/generate_data.py`.
+
+Dummy data: 8 products (the same teas as the frontend), 40 users (1 Owner, 3 Staff, 36 Customers), 60 orders over the last 90 days, 40 reviews, 90 days of visits. Every account's password is `password123` (stored bcrypt-hashed).
+Each product's image is `frontend/img/<file>` from `PRODUCT_IMAGES` in `generate_data.py` (e.g. 1 → `sencha.jpg`, 5 → `matcha.jpg`).
 
 ## Pages
 

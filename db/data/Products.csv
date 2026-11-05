@@ -1,0 +1,9 @@
+product_id,p_name,tea_type,price,stock_qty,description
+1,Sencha Green Tea,Green,12.00,53,"Classic Japanese steamed green tea with a fresh, grassy flavor and clean finish."
+2,Earl Grey,Black,14.00,80,Black tea scented with bergamot oil and blue cornflower petals. Citrusy and fragrant.
+3,Tie Guan Yin,Oolong,16.00,38,"Rolled Anxi oolong with a floral aroma and smooth, buttery body."
+4,Chamomile Blend,Herbal,11.00,41,Whole chamomile flowers with a hint of lemongrass. Calming and caffeine-free.
+5,Ceremonial Matcha,Matcha,28.00,4,"Stone-ground shade-grown tencha from Uji. Rich, smooth and vivid green."
+6,Silver Needle,White,22.00,38,"Downy white tea buds from Fuding with a delicate, honeyed sweetness."
+7,Classic Pu-erh,Pu-erh,18.00,4,"Aged ripe pu-erh from Yunnan. Earthy, bold and smooth."
+8,Jasmine Green Tea,Green,13.00,30,"Green tea layered with fresh jasmine blossoms for a fragrant, smooth cup."

@@ -1,0 +1,41 @@
+user_id,user_type,user_name,email,password,address,phone_no,payment_info
+1,Owner,Emily Tan,emily.tan@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"960 Belt Line Rd, Richardson, TX 75080",(214) 848-7138,\N
+2,Staff,James Lee,james.lee@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"8582 Elm St, Richardson, TX 75080",(469) 989-7304,\N
+3,Staff,Priya Sharma,priya.sharma@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"6922 Hillcrest Rd, Frisco, TX 75034",(214) 307-4626,\N
+4,Staff,Daniel Kim,daniel.kim@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"3422 Belt Line Rd, Dallas, TX 75204",(469) 610-3725,\N
+5,Customer,Sophia Chen,sophia.chen@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"5634 Spring Valley Rd, Dallas, TX 75206",(214) 607-4249,Amex ending 7621
+6,Customer,Michael Johnson,michael.johnson@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"3277 Campbell Rd, Plano, TX 75024",(469) 981-1349,Visa ending 9801
+7,Customer,Olivia Martinez,olivia.martinez@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"1087 Greenville Ave, Dallas, TX 75204",(214) 917-2915,Visa ending 8469
+8,Customer,Ethan Nguyen,ethan.nguyen@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"5436 Hillcrest Rd, Garland, TX 75040",(469) 822-1658,Discover ending 9080
+9,Customer,Ava Patel,ava.patel@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"1107 Belt Line Rd, Plano, TX 75024",(469) 425-6551,Amex ending 9397
+10,Customer,Noah Brown,noah.brown@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"7020 Spring Valley Rd, Richardson, TX 75080",(972) 969-4240,Discover ending 8558
+11,Customer,Mia Garcia,mia.garcia@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"7725 Preston Rd, Dallas, TX 75206",(469) 561-2043,Amex ending 1865
+12,Customer,Lucas Wilson,lucas.wilson@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"9937 Elm St, Plano, TX 75024",(469) 520-3708,Visa ending 7506
+13,Customer,Isabella Lopez,isabella.lopez@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"1067 Spring Valley Rd, Dallas, TX 75206",(214) 233-4051,Amex ending 3963
+14,Customer,Mason Davis,mason.davis@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"8461 Elm St, Garland, TX 75040",(972) 690-3492,Amex ending 3841
+15,Customer,Harper Rodriguez,harper.rodriguez@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"5140 Belt Line Rd, Dallas, TX 75204",(469) 240-9158,Visa ending 2827
+16,Customer,Logan Anderson,logan.anderson@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"3997 Elm St, Addison, TX 75001",(214) 405-2631,Discover ending 1083
+17,Customer,Amelia Thomas,amelia.thomas@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"6707 Oak Lawn Ave, Richardson, TX 75080",(214) 897-3000,Amex ending 6565
+18,Customer,Jacob Hernandez,jacob.hernandez@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"412 Hillcrest Rd, Dallas, TX 75206",(972) 720-2988,Amex ending 9562
+19,Customer,Evelyn Moore,evelyn.moore@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"9765 Preston Rd, Plano, TX 75024",(972) 585-7173,Visa ending 2411
+20,Customer,Aiden Jackson,aiden.jackson@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"6012 Belt Line Rd, Richardson, TX 75080",(972) 487-2681,Discover ending 7682
+21,Customer,Abigail White,abigail.white@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"3201 Main St, Irving, TX 75038",(972) 553-4372,Amex ending 9619
+22,Customer,Carlos Rivera,carlos.rivera@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"6789 Campbell Rd, Plano, TX 75024",(972) 766-6806,Visa ending 3419
+23,Customer,Sofia Clark,sofia.clark@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"3218 Oak Lawn Ave, Addison, TX 75001",(214) 394-6815,Mastercard ending 4473
+24,Customer,Wei Wang,wei.wang@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"8502 Main St, Plano, TX 75024",(972) 989-8367,Mastercard ending 3570
+25,Customer,Hannah Lewis,hannah.lewis@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"6665 Elm St, Garland, TX 75040",(972) 822-1972,Mastercard ending 6305
+26,Customer,Omar Hassan,omar.hassan@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"2768 Preston Rd, Addison, TX 75001",(972) 770-2582,Discover ending 2733
+27,Customer,Grace Walker,grace.walker@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"6925 Mockingbird Ln, Dallas, TX 75206",(214) 486-7677,Amex ending 4880
+28,Customer,Diego Torres,diego.torres@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"1917 Legacy Dr, Dallas, TX 75204",(469) 723-4107,Visa ending 2857
+29,Customer,Chloe Hall,chloe.hall@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"3974 Preston Rd, Dallas, TX 75206",(469) 312-9524,Visa ending 4845
+30,Customer,Ryan Young,ryan.young@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"9021 Main St, Addison, TX 75001",(214) 912-8145,Amex ending 2913
+31,Customer,Layla Allen,layla.allen@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"4758 Greenville Ave, Garland, TX 75040",(469) 844-2724,Visa ending 4316
+32,Customer,Nathan King,nathan.king@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"5736 Belt Line Rd, Dallas, TX 75204",(972) 490-8289,Visa ending 7567
+33,Customer,Zoe Wright,zoe.wright@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"8053 Mockingbird Ln, Irving, TX 75038",(972) 400-3362,Mastercard ending 3636
+34,Customer,Arjun Reddy,arjun.reddy@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"8797 Coit Rd, Frisco, TX 75034",(469) 705-6195,Mastercard ending 9960
+35,Customer,Lily Scott,lily.scott@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"2717 Mockingbird Ln, Addison, TX 75001",(214) 755-8799,Amex ending 3052
+36,Customer,Marcus Green,marcus.green@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"9006 Belt Line Rd, Frisco, TX 75034",(972) 939-8412,Mastercard ending 9817
+37,Customer,Nora Baker,nora.baker@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"1530 Oak Lawn Ave, Dallas, TX 75204",(214) 419-6266,Amex ending 8566
+38,Customer,Kai Adams,kai.adams@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"8371 Campbell Rd, Irving, TX 75038",(214) 960-4061,Amex ending 5808
+39,Customer,Elena Flores,elena.flores@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"9509 Elm St, Garland, TX 75040",(972) 682-9214,Visa ending 3700
+40,Customer,Samuel Hill,samuel.hill@example.com,$2b$10$1tCId02pbTlgKGXjRUw/D.gXknmLXz12rDxLyFUaARQUlf6jDRKWa,"8022 Coit Rd, Dallas, TX 75206",(469) 529-3559,Amex ending 7141

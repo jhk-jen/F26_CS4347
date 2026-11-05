@@ -1,0 +1,41 @@
+user_id,product_id,rating_value,review_title,review_str,review_date
+5,1,5,Absolutely love it,My new daily cup. Fresh and full of flavor.,2026-08-15
+5,2,4,Solid choice,Good everyday tea with nice aroma.,2026-10-23
+5,4,5,Best I've had,Better than anything from the grocery store.,2026-09-25
+5,5,5,Will reorder,Arrived fast and tastes fantastic.,2026-08-23
+6,1,5,Will reorder,Arrived fast and tastes fantastic.,2026-10-27
+6,4,2,Not for me,Flavor was weaker than I hoped.,2026-10-15
+6,8,3,Pretty okay,"Decent, but not quite what I expected.",2026-10-19
+7,2,5,Best I've had,Better than anything from the grocery store.,2026-09-01
+7,5,5,Best I've had,Better than anything from the grocery store.,2026-10-01
+8,1,5,Perfect every time,Brews beautifully and smells amazing.,2026-10-10
+8,2,5,Absolutely love it,My new daily cup. Fresh and full of flavor.,2026-10-11
+12,2,3,Pretty okay,"Decent, but not quite what I expected.",2026-10-15
+13,2,5,Perfect every time,Brews beautifully and smells amazing.,2026-10-14
+13,3,3,Average,"Fine for the price, nothing special.",2026-10-11
+14,4,5,Absolutely love it,My new daily cup. Fresh and full of flavor.,2026-09-26
+14,7,3,Pretty okay,"Decent, but not quite what I expected.",2026-10-15
+16,1,5,Best I've had,Better than anything from the grocery store.,2026-09-26
+16,3,4,Lovely tea,Smooth and fragrant. Would buy again.,2026-10-07
+17,6,5,Best I've had,Better than anything from the grocery store.,2026-08-20
+18,4,4,Solid choice,Good everyday tea with nice aroma.,2026-11-05
+19,4,5,Perfect every time,Brews beautifully and smells amazing.,2026-11-05
+19,7,5,Absolutely love it,My new daily cup. Fresh and full of flavor.,2026-11-05
+21,2,5,Absolutely love it,My new daily cup. Fresh and full of flavor.,2026-10-29
+21,6,5,Absolutely love it,My new daily cup. Fresh and full of flavor.,2026-09-15
+21,7,4,Really good,"Great flavor, just a touch pricey.",2026-09-14
+25,5,5,Best I've had,Better than anything from the grocery store.,2026-10-17
+26,2,3,Average,"Fine for the price, nothing special.",2026-10-12
+26,6,4,Lovely tea,Smooth and fragrant. Would buy again.,2026-10-02
+27,1,4,Really good,"Great flavor, just a touch pricey.",2026-11-05
+27,4,4,Lovely tea,Smooth and fragrant. Would buy again.,2026-11-02
+29,8,5,Will reorder,Arrived fast and tastes fantastic.,2026-08-31
+31,8,5,Perfect every time,Brews beautifully and smells amazing.,2026-11-02
+32,3,3,Average,"Fine for the price, nothing special.",2026-10-30
+32,6,4,Really good,"Great flavor, just a touch pricey.",2026-11-04
+32,8,4,Solid choice,Good everyday tea with nice aroma.,2026-09-06
+35,2,4,Solid choice,Good everyday tea with nice aroma.,2026-11-03
+35,3,4,Solid choice,Good everyday tea with nice aroma.,2026-08-13
+37,5,5,Will reorder,Arrived fast and tastes fantastic.,2026-09-28
+39,5,3,Average,"Fine for the price, nothing special.",2026-09-01
+40,6,5,Will reorder,Arrived fast and tastes fantastic.,2026-09-21
