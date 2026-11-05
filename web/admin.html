@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard | Leaf &amp; Brew Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="admin">
+
+    <aside class="sidebar">
+      <a class="logo" href="admin.html">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="#5c7353"><path d="M12 21C7 18 4 14 4 8c4 0 7 2 8 6 1-4 4-6 8-6 0 6-3 10-8 13z"/></svg>
+        <span>
+          <span class="logo-name">Leaf &amp; Brew</span><br>
+          <span class="logo-tag">Admin</span>
+        </span>
+      </a>
+      <nav class="side-nav">
+        <a class="active" href="admin.html">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 11 12 3l9 8v10h-6v-6H9v6H3z"/></svg>
+          Dashboard
+        </a>
+        <a href="#">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+          Orders
+        </a>
+        <a href="#">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>
+          Stock
+        </a>
+        <a href="#">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          Users
+        </a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+
+      <div class="admin-top">
+        <div>
+          <h1>Dashboard</h1>
+          <p>A quick overview of your tea shop.</p>
+        </div>
+        <!-- Search across Orders, Users and Products -->
+        <form class="search" action="#" method="get">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" name="q" placeholder="Search orders, users, or products..." maxlength="100">
+        </form>
+        <div class="avatar"><span>A</span> Admin</div>
+      </div>
+
+      <!-- Summary stats: COUNT / SUM queries over DailyMetrics, Orders, Products, Users -->
+      <section class="stats">
+        <div class="stat">
+          <div class="stat-icon">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6zM16 14c3 0 6 1.5 6 5h-5"/></svg>
+          </div>
+          <div>
+            <div class="stat-label">User Traffic</div>
+            <div class="stat-value">1,284</div>
+            <div class="stat-note"><span class="up">▲ +12%</span> vs last week</div>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+          </div>
+          <div>
+            <div class="stat-label">Total Orders</div>
+            <div class="stat-value">86</div>
+            <div class="stat-note"><span class="up">▲ +8%</span> vs last week</div>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-icon warn">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>
+          </div>
+          <div>
+            <div class="stat-label">Low Stock Items</div>
+            <div class="stat-value">3</div>
+            <div class="stat-note">Require restocking</div>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          </div>
+          <div>
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value">542</div>
+            <div class="stat-note"><span class="up">▲ +6%</span> vs last week</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panels">
+
+        <!-- User traffic: DailyMetrics rows for the chosen range -->
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>User Traffic</h2>
+              <p>Website visitors over the last 7 days.</p>
+            </div>
+            <form action="#" method="get">
+              <select name="range" aria-label="Date range">
+                <option value="7">Last 7 days</option>
+                <option value="14">Last 14 days</option>
+                <option value="30">Last 30 days</option>
+              </select>
+            </form>
+          </div>
+          <svg class="chart" viewBox="0 0 600 220" role="img" aria-label="Line chart of daily visits">
+            <g stroke="#e7e1d5">
+              <line x1="40" y1="10" x2="590" y2="10"/>
+              <line x1="40" y1="55" x2="590" y2="55"/>
+              <line x1="40" y1="100" x2="590" y2="100"/>
+              <line x1="40" y1="145" x2="590" y2="145"/>
+              <line x1="40" y1="190" x2="590" y2="190"/>
+            </g>
+            <g text-anchor="end">
+              <text x="32" y="14">400</text>
+              <text x="32" y="59">300</text>
+              <text x="32" y="104">200</text>
+              <text x="32" y="149">100</text>
+              <text x="32" y="194">0</text>
+            </g>
+            <polygon fill="#e6ece0" opacity="0.7" points="40,190 40,111 132,89 223,102 315,73 407,44 498,66 590,30 590,190"/>
+            <polyline fill="none" stroke="#5c7353" stroke-width="2.5" points="40,111 132,89 223,102 315,73 407,44 498,66 590,30"/>
+            <g fill="#5c7353">
+              <circle cx="40" cy="111" r="4.5"/><circle cx="132" cy="89" r="4.5"/><circle cx="223" cy="102" r="4.5"/>
+              <circle cx="315" cy="73" r="4.5"/><circle cx="407" cy="44" r="4.5"/><circle cx="498" cy="66" r="4.5"/>
+              <circle cx="590" cy="30" r="4.5"/>
+            </g>
+            <g text-anchor="middle">
+              <text x="40" y="212">Oct 30</text><text x="132" y="212">Oct 31</text><text x="223" y="212">Nov 1</text>
+              <text x="315" y="212">Nov 2</text><text x="407" y="212">Nov 3</text><text x="498" y="212">Nov 4</text>
+              <text x="575" y="212">Nov 5</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Product stock: Products ordered by stock_qty; Low Stock when stock_qty < 10 -->
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Product Stock</h2>
+              <p>Current stock levels for key products.</p>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Product</th><th>Stock</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="thumb-cell"><img src="img/sencha.jpg" alt="">Sencha Green Tea</div></td>
+                <td>42</td><td><span class="pill">In Stock</span></td>
+              </tr>
+              <tr>
+                <td><div class="thumb-cell"><img src="img/earl-grey.jpg" alt="">Earl Grey</div></td>
+                <td>28</td><td><span class="pill">In Stock</span></td>
+              </tr>
+              <tr>
+                <td><div class="thumb-cell"><img src="img/matcha.jpg" alt="">Ceremonial Matcha</div></td>
+                <td>6</td><td><span class="pill warn">Low Stock</span></td>
+              </tr>
+              <tr>
+                <td><div class="thumb-cell"><img src="img/chamomile.jpg" alt="">Chamomile Blend</div></td>
+                <td>24</td><td><span class="pill">In Stock</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="panel-foot"><a class="link-arrow" href="#">Manage stock →</a></div>
+        </div>
+
+        <!-- Recent orders: Orders joined with Users, total from OrderItem -->
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Recent Orders</h2>
+              <p>Latest orders from your customers.</p>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Order ID</th><th>Customer</th><th>Status</th><th>Total</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>#1008</td><td>Emily Tan</td><td><span class="pill">Processing</span></td><td>$28.00</td></tr>
+              <tr><td>#1007</td><td>James Lee</td><td><span class="pill">Shipped</span></td><td>$42.00</td></tr>
+              <tr><td>#1006</td><td>Priya Sharma</td><td><span class="pill warn">Pending</span></td><td>$16.00</td></tr>
+              <tr><td>#1005</td><td>Daniel Kim</td><td><span class="pill">Delivered</span></td><td>$24.00</td></tr>
+              <tr><td>#1004</td><td>Sophia Chen</td><td><span class="pill">Processing</span></td><td>$32.00</td></tr>
+            </tbody>
+          </table>
+          <div class="panel-foot"><a class="link-arrow" href="#">View all orders →</a></div>
+        </div>
+
+        <!-- User management: Users rows with their user_type -->
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>User Management</h2>
+              <p>Registered users on your platform.</p>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Role</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Emily Tan</td><td class="email">emily.tan@example.com</td><td><span class="pill">Customer</span></td></tr>
+              <tr><td>James Lee</td><td class="email">james.lee@example.com</td><td><span class="pill">Customer</span></td></tr>
+              <tr><td>Priya Sharma</td><td class="email">priya.s@example.com</td><td><span class="pill">Customer</span></td></tr>
+              <tr><td>Daniel Kim</td><td class="email">daniel.kim@example.com</td><td><span class="pill dark">Admin</span></td></tr>
+              <tr><td>Sophia Chen</td><td class="email">sophia.chen@example.com</td><td><span class="pill">Customer</span></td></tr>
+            </tbody>
+          </table>
+          <div class="panel-foot"><a class="link-arrow" href="#">View all users →</a></div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+</body>
+</html>
