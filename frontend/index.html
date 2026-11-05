@@ -85,13 +85,13 @@
 
     <section>
       <div class="results-bar">
-        <span>8 products</span>
+        <span id="product-count">8 products</span>
         <span>Small leaves. A brighter you.</span>
       </div>
 
       <!-- Product grid: one card per row of the Products query (sample rows shown) -->
       <div class="product-grid">
-        <article class="card">
+        <article class="card" data-name="Sencha Green Tea" data-type="Green" data-price="12" data-rating="4.8" data-order="0">
           <a href="product.html"><img src="img/sencha.jpg" alt="Sencha Green Tea"></a>
           <div class="card-body">
             <h3><a href="product.html">Sencha Green Tea</a></h3>
@@ -105,7 +105,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card" data-name="Earl Grey" data-type="Black" data-price="14" data-rating="4.7" data-order="1">
           <a href="product.html"><img src="img/earl-grey.jpg" alt="Earl Grey"></a>
           <div class="card-body">
             <h3><a href="product.html">Earl Grey</a></h3>
@@ -119,7 +119,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card" data-name="Tie Guan Yin" data-type="Oolong" data-price="16" data-rating="4.6" data-order="2">
           <a href="product.html"><img src="img/tie-guan-yin.jpg" alt="Tie Guan Yin"></a>
           <div class="card-body">
             <h3><a href="product.html">Tie Guan Yin</a></h3>
@@ -133,7 +133,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card" data-name="Chamomile Blend" data-type="Herbal" data-price="11" data-rating="4.8" data-order="3">
           <a href="product.html"><img src="img/chamomile.jpg" alt="Chamomile Blend"></a>
           <div class="card-body">
             <h3><a href="product.html">Chamomile Blend</a></h3>
@@ -147,7 +147,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card" data-name="Ceremonial Matcha" data-type="Matcha" data-price="28" data-rating="4.9" data-order="4">
           <a href="product.html"><img src="img/matcha.jpg" alt="Ceremonial Matcha"></a>
           <div class="card-body">
             <h3><a href="product.html">Ceremonial Matcha</a></h3>
@@ -161,7 +161,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card" data-name="Silver Needle" data-type="White" data-price="22" data-rating="4.7" data-order="5">
           <a href="product.html"><img src="img/silver-needle.jpg" alt="Silver Needle"></a>
           <div class="card-body">
             <h3><a href="product.html">Silver Needle</a></h3>
@@ -175,7 +175,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card" data-name="Classic Pu-erh" data-type="Pu-erh" data-price="18" data-rating="4.5" data-order="6">
           <a href="product.html"><img src="img/pu-erh.jpg" alt="Classic Pu-erh"></a>
           <div class="card-body">
             <h3><a href="product.html">Classic Pu-erh</a></h3>
@@ -189,7 +189,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card" data-name="Jasmine Green Tea" data-type="Green" data-price="13" data-rating="4.7" data-order="7">
           <a href="product.html"><img src="img/jasmine.jpg" alt="Jasmine Green Tea"></a>
           <div class="card-body">
             <h3><a href="product.html">Jasmine Green Tea</a></h3>
@@ -203,9 +203,13 @@
           </div>
         </article>
       </div>
+      <p id="no-results" class="empty" hidden>No teas match those filters.</p>
     </section>
 
   </main>
 
+  <footer class="site-footer">Leaf &amp; Brew · CS 4347 Team 4 · <a href="admin.html">Admin dashboard</a></footer>
+
+  <script src="js/main.js"></script>
 </body>
 </html>

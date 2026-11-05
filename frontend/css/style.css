@@ -238,3 +238,15 @@ td { padding: 7px 12px; border-bottom: 1px solid var(--line); }
 td.email { color: var(--muted); }
 .thumb-cell { display: flex; align-items: center; gap: 14px; }
 .thumb-cell img { width: 48px; height: 34px; object-fit: cover; border-radius: 50%; }
+
+/* ---------- JS states and small extras ---------- */
+
+[hidden] { display: none !important; }
+.empty { color: var(--muted); text-align: center; padding: 40px 0; }
+.form-note { color: var(--green-dark); margin: 0; }
+.btn:disabled { opacity: 0.8; cursor: default; }
+.thumbs img { cursor: pointer; }
+.back-link { display: block; margin-top: 32px; padding-left: 18px; }
+.panel { scroll-margin-top: 20px; }
+.site-footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px; border-top: 1px solid var(--line); }
+.site-footer a { text-decoration: underline; }

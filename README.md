@@ -15,7 +15,7 @@ An online tea shop. Customers browse, filter and order tea and leave reviews. St
 ## Layout
 
 ```
-frontend/   HTML pages, css/, img/   (Phase 3 Task B, done)
+frontend/   HTML pages, css/, js/, img/   (Phase 3 Task B, done)
 backend/    Express server and routes (not started)
 db/         create.sql, load.sql, data/*.csv   (Phase 3 Task C, to add)
 ```
@@ -28,8 +28,14 @@ db/         create.sql, load.sql, data/*.csv   (Phase 3 Task C, to add)
 | `frontend/product.html` | Product: details, add to cart, reviews, write a review | Products row, Reviews + Users; INSERT/UPDATE Reviews |
 | `frontend/admin.html` | Admin dashboard: traffic chart, stock, recent orders, users | DailyMetrics, Products, Orders + OrderItem, Users |
 | `frontend/css/style.css` | Shared styles | |
+| `frontend/js/main.js` | Client-side search/filter/sort, cart badge, gallery, review validation, admin nav/search (stand-ins until the backend) | |
 
 Planned later: login/register, cart and checkout, my orders, and admin CRUD pages for products, orders and users.
+
+## Live preview (GitHub Pages)
+
+`.github/workflows/pages.yml` deploys `frontend/` on every push to `main`.
+One-time setup (repo admin): **Settings → Pages → Source: GitHub Actions**. Site: https://jhk-jen.github.io/F26_CS4347/
 
 ## Running the frontend
 

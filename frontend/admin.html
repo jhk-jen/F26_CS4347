@@ -21,23 +21,24 @@
         </span>
       </a>
       <nav class="side-nav">
-        <a class="active" href="admin.html">
+        <a class="active" href="#top">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 11 12 3l9 8v10h-6v-6H9v6H3z"/></svg>
           Dashboard
         </a>
-        <a href="#">
+        <a href="#orders">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
           Orders
         </a>
-        <a href="#">
+        <a href="#stock">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>
           Stock
         </a>
-        <a href="#">
+        <a href="#users">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
           Users
         </a>
       </nav>
+      <a class="link-arrow back-link" href="index.html">← Back to shop</a>
     </aside>
 
     <main class="admin-main">
@@ -147,7 +148,7 @@
         </div>
 
         <!-- Product stock: Products ordered by stock_qty; Low Stock when stock_qty < 10 -->
-        <div class="panel">
+        <div class="panel" id="stock">
           <div class="panel-head">
             <div>
               <h2>Product Stock</h2>
@@ -181,7 +182,7 @@
         </div>
 
         <!-- Recent orders: Orders joined with Users, total from OrderItem -->
-        <div class="panel">
+        <div class="panel" id="orders">
           <div class="panel-head">
             <div>
               <h2>Recent Orders</h2>
@@ -204,7 +205,7 @@
         </div>
 
         <!-- User management: Users rows with their user_type -->
-        <div class="panel">
+        <div class="panel" id="users">
           <div class="panel-head">
             <div>
               <h2>User Management</h2>
@@ -230,5 +231,6 @@
     </main>
   </div>
 
+  <script src="js/main.js"></script>
 </body>
 </html>
