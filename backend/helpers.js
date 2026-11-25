@@ -53,13 +53,16 @@ function getGallery(product_id, slug) {
   return { main: slug, thumbs: [slug] };
 }
 
-// Star-rating string (e.g. 4.5 → "★★★★½☆").
+// Star-rating HTML (e.g. 4.5 -> four full stars, one half-filled star, one empty).
+// Each star is the same glyph; .half overlays a half-width filled copy on an empty one.
 function stars(avg) {
   const r = Math.round((parseFloat(avg) || 0) * 2) / 2;
-  const full  = Math.floor(r);
-  const half  = r - full >= 0.5;
-  const empty = 5 - full - (half ? 1 : 0);
-  return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(empty);
+  let html = `<span class="star-row" role="img" aria-label="${r} out of 5 stars">`;
+  for (let i = 1; i <= 5; i++) {
+    const cls = r >= i ? 'full' : (r >= i - 0.5 ? 'half' : 'empty');
+    html += `<span class="st ${cls}" aria-hidden="true">★</span>`;
+  }
+  return html + '</span>';
 }
 
 // Format a decimal as a price string.
