@@ -1,0 +1,38 @@
+<%#
+  Right side of the header, shared by the shop header and the admin top bar so both read the same:
+  [area switch] [cart: shop only] [profile] [Log Out]
+  area: 'shop' or 'admin'
+%>
+<% const isStaff = user && ['Owner', 'Staff'].includes(user.user_type); %>
+<div class="user-nav">
+  <% if (area === 'admin') { %>
+    <a class="nav-switch" href="/">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg>
+      Shop
+    </a>
+  <% } else if (isStaff) { %>
+    <a class="nav-switch" href="/admin">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      Admin
+    </a>
+  <% } %>
+
+  <% if (area !== 'admin') { %>
+    <a class="cart-link" href="/cart" aria-label="Cart">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 11h11l2-8H6.2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+      <span class="cart-badge"><%= cart.items.reduce(function (s, i) { return s + i.qty; }, 0) %></span>
+    </a>
+  <% } %>
+
+  <% if (user) { %>
+    <a class="avatar" href="/account" title="Your account and orders">
+      <span><%= user.user_name[0].toUpperCase() %></span><%= user.user_name %>
+    </a>
+    <a href="/logout">Log Out</a>
+  <% } else { %>
+    <a class="avatar" href="/login">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Sign in
+    </a>
+  <% } %>
+</div>

@@ -73,7 +73,7 @@ router.get('/', async (req, res, next) => {
       chartPts: pts,
       chartMax,
       range,
-      lowStockProducts,
+      lowStockProducts: withImg(lowStockProducts),
       recentOrders
     });
   } catch (err) { next(err); }

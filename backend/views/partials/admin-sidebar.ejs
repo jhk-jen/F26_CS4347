@@ -1,6 +1,6 @@
 <aside class="sidebar">
   <a class="logo" href="/admin">
-    <svg width="34" height="34" viewBox="0 0 24 24" fill="#5c7353"><path d="M12 21C7 18 4 14 4 8c4 0 7 2 8 6 1-4 4-6 8-6 0 6-3 10-8 13z"/></svg>
+    <img class="logo-mark" src="/img/logo.png" alt="" width="40" height="40">
     <span>
       <span class="logo-name">Leaf &amp; Brew</span><br>
       <span class="logo-tag">Admin</span>
@@ -28,15 +28,7 @@
       Sales Report
     </a>
   </nav>
-  <a class="<%= active === 'sqli' ? 'active' : '' %>" href="/sqli"
-     style="margin-top:auto;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>
-    SQL Injection Demo
-  </a>
-  <div style="padding:12px 18px;font-size:13px;color:var(--muted)">
-    Logged in as <strong><%= user.user_name %></strong><br>
-    <a href="/logout" style="color:var(--green)">Log out</a>
-    &nbsp;·&nbsp;
-    <a href="/" style="color:var(--green)">View shop</a>
+  <div class="sidebar-foot">
+    <a class="btn side-btn" href="/sqli">SQL Injection Demo</a>
   </div>
 </aside>

@@ -6,17 +6,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
 </head>
 <body>
 <div class="admin">
   <%- include('../partials/admin-sidebar', { active, user }) %>
 
   <main class="admin-main">
+    <%- include('../partials/admin-bar', { user }) %>
     <div class="admin-top">
       <div><h1>Dashboard</h1><p>A quick overview of your tea shop.</p></div>
-      <div class="avatar">
-        <span><%= user.user_name[0].toUpperCase() %></span> <%= user.user_name %>
-      </div>
     </div>
 
     <%- include('../partials/flash') %>
@@ -76,6 +75,7 @@
             </select>
           </form>
         </div>
+        <div class="chart-wrap">
         <svg class="chart" viewBox="0 0 600 220" role="img" aria-label="Traffic line chart">
           <!-- grid lines & y-axis labels -->
           <% for (let i = 0; i <= 4; i++) { %>
@@ -90,7 +90,9 @@
             <polyline fill="none" stroke="#5c7353" stroke-width="2.5"
               points="<%= chartPts.map(p => p.x+','+p.y).join(' ') %>"/>
             <% chartPts.forEach(p => { %>
-              <circle cx="<%= p.x %>" cy="<%= p.y %>" r="4" fill="#5c7353"/>
+              <circle class="pt" cx="<%= p.x %>" cy="<%= p.y %>" r="4" fill="#5c7353"/>
+              <circle class="hit" cx="<%= p.x %>" cy="<%= p.y %>" r="12" fill="transparent"
+                      data-date="<%= p.date %>" data-visits="<%= p.visits %>"><title><%= p.date %>: <%= p.visits %> visits</title></circle>
             <% }) %>
             <%
               const step = Math.max(1, Math.floor(chartPts.length / 7));
@@ -106,6 +108,8 @@
             <text x="300" y="110" text-anchor="middle" fill="#7a776c">No data available for this range</text>
           <% } %>
         </svg>
+          <div class="chart-tip" hidden></div>
+        </div>
       </div>
 
       <!-- Low stock -->
@@ -119,7 +123,12 @@
             <% } %>
             <% lowStockProducts.forEach(p => { %>
               <tr>
-                <td><a href="/admin/products/<%= p.product_id %>/edit" style="color:var(--green)"><%= p.p_name %></a></td>
+                <td>
+                  <a class="thumb-link" href="/admin/products/<%= p.product_id %>/edit">
+                    <img class="thumb" src="<%= p.img === 'placeholder' ? '/img/placeholder.svg' : '/img/' + p.img + '.jpg' %>" alt="">
+                    <span><%= p.p_name %></span>
+                  </a>
+                </td>
                 <td><%= p.stock_qty %></td>
                 <td><span class="pill warn">Low Stock</span></td>
               </tr>
@@ -151,5 +160,27 @@
     </section>
   </main>
 </div>
+<script>
+  // Traffic chart: show the exact visits for the point under the cursor.
+  (function () {
+    const wrap = document.querySelector('.chart-wrap');
+    if (!wrap) return;
+    const tip = wrap.querySelector('.chart-tip');
+    wrap.querySelectorAll('circle.hit').forEach(c => {
+      c.querySelector('title')?.remove();   // custom tooltip replaces the native one
+      c.addEventListener('mouseenter', () => {
+        const d = new Date(c.dataset.date + 'T00:00:00');
+        tip.innerHTML = '<strong>' + Number(c.dataset.visits).toLocaleString() + '</strong> visits<br>' +
+          d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+        const w = wrap.getBoundingClientRect(), r = c.getBoundingClientRect();
+        tip.style.left = (r.left + r.width / 2 - w.left) + 'px';
+        tip.style.top  = (r.top - w.top) + 'px';
+        tip.hidden = false;
+        c.previousElementSibling.setAttribute('r', 6);
+      });
+      c.addEventListener('mouseleave', () => { tip.hidden = true; c.previousElementSibling.setAttribute('r', 4); });
+    });
+  })();
+</script>
 </body>
 </html>
