@@ -28,15 +28,7 @@
       Sales Report
     </a>
   </nav>
-  <a class="<%= active === 'sqli' ? 'active' : '' %>" href="/sqli"
-     style="margin-top:auto;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>
-    SQL Injection Demo
-  </a>
-  <div style="padding:12px 18px;font-size:13px;color:var(--muted)">
-    Logged in as <strong><%= user.user_name %></strong><br>
-    <a href="/logout" style="color:var(--green)">Log out</a>
-    &nbsp;·&nbsp;
-    <a href="/" style="color:var(--green)">View shop</a>
+  <div class="sidebar-foot">
+    <a class="btn side-btn" href="/sqli">SQL Injection Demo</a>
   </div>
 </aside>

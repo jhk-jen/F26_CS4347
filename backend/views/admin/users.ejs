@@ -12,6 +12,7 @@
 <div class="admin">
   <%- include('../partials/admin-sidebar', { active, user }) %>
   <main class="admin-main">
+    <%- include('../partials/admin-bar', { user }) %>
     <div class="admin-top">
       <div><h1>Users</h1><p>Registered accounts.</p></div>
       <form class="search" action="/admin/users" method="get">
