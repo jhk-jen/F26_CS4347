@@ -1,0 +1,121 @@
+<%- include('partials/header', { title, navActive: 'shop' }) %>
+<%- include('partials/flash') %>
+
+<section class="hero">
+  <div>
+    <h1>Shop Tea</h1>
+    <p>Thoughtfully sourced. Beautifully simple.</p>
+  </div>
+</section>
+
+<main class="shop">
+
+  <form class="filters" action="/" method="get">
+    <fieldset>
+      <legend>Tea Type</legend>
+      <% ['Green','Black','Oolong','White','Herbal','Matcha','Pu-erh'].forEach(t => { %>
+        <label>
+          <input type="checkbox" name="tea_type" value="<%= t %>"
+            <%= query.tea_type.includes(t) ? 'checked' : '' %>>
+          <%= t %> Tea
+        </label>
+      <% }) %>
+    </fieldset>
+    <fieldset>
+      <legend>Price</legend>
+      <div class="price-row">
+        <input type="number" name="min_price" min="0" step="0.01" placeholder="$0"
+               value="<%= query.min_price %>" aria-label="Minimum price">
+        <span>–</span>
+        <input type="number" name="max_price" min="0" step="0.01" placeholder="$50"
+               value="<%= query.max_price %>" aria-label="Maximum price">
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Sort By</legend>
+      <select name="sort" aria-label="Sort by">
+        <% [['featured','Featured'],['price_asc','Price: Low to High'],['price_desc','Price: High to Low'],['rating','Top Rated'],['name','Name (A–Z)']].forEach(([v,l]) => { %>
+          <option value="<%= v %>" <%= query.sort === v ? 'selected' : '' %>><%= l %></option>
+        <% }) %>
+      </select>
+    </fieldset>
+    <%# Keep q in the filter form so Apply Filters preserves the search term %>
+    <% if (query.q) { %><input type="hidden" name="q" value="<%= query.q %>"><% } %>
+    <button class="btn" type="submit">Apply Filters</button>
+  </form>
+
+  <section>
+    <%
+      // Build a URL that removes exactly one filter parameter
+      function filterUrl(remove) {
+        var p = new URLSearchParams();
+        if (remove !== 'q' && query.q)        p.set('q', query.q);
+        query.tea_type.forEach(function(t) { if (t !== remove) p.append('tea_type', t); });
+        if (remove !== 'min_price' && query.min_price) p.set('min_price', query.min_price);
+        if (remove !== 'max_price' && query.max_price) p.set('max_price', query.max_price);
+        if (query.sort && query.sort !== 'featured') p.set('sort', query.sort);
+        var s = p.toString();
+        return s ? '/?' + s : '/';
+      }
+      var hasFilters = query.q || query.tea_type.length || query.min_price || query.max_price;
+    %>
+    <% if (hasFilters) { %>
+    <div class="filter-chips">
+      <% if (query.q) { %>
+        <span class="chip">Search: &ldquo;<%= query.q %>&rdquo; <a href="<%= filterUrl('q') %>" class="chip-x" aria-label="Remove search">&#x2715;</a></span>
+      <% } %>
+      <% query.tea_type.forEach(function(t) { %>
+        <span class="chip"><%= t %> <a href="<%= filterUrl(t) %>" class="chip-x" aria-label="Remove <%= t %>">&#x2715;</a></span>
+      <% }) %>
+      <% if (query.min_price) { %>
+        <span class="chip">Min $<%= query.min_price %> <a href="<%= filterUrl('min_price') %>" class="chip-x" aria-label="Remove min price">&#x2715;</a></span>
+      <% } %>
+      <% if (query.max_price) { %>
+        <span class="chip">Max $<%= query.max_price %> <a href="<%= filterUrl('max_price') %>" class="chip-x" aria-label="Remove max price">&#x2715;</a></span>
+      <% } %>
+      <a href="/" class="chip chip-clear">Clear all &#x2715;</a>
+    </div>
+    <% } %>
+
+    <div class="results-bar">
+      <span><%= products.length %> product<%= products.length !== 1 ? 's' : '' %></span>
+      <span>Small leaves. A brighter you.</span>
+    </div>
+
+    <% if (products.length === 0) { %>
+      <p style="color:var(--muted);padding:24px 0">No products match your filters.</p>
+    <% } else { %>
+    <div class="product-grid">
+      <% products.forEach(function(p) { %>
+        <article class="card">
+          <a href="/product/<%= p.product_id %>">
+            <img src="/img/<%= p.img %>.jpg" alt="<%= p.p_name %>">
+          </a>
+          <div class="card-body">
+            <h3><a href="/product/<%= p.product_id %>"><%= p.p_name %></a></h3>
+            <div class="meta"><%= p.tea_type === 'Matcha' ? 'Matcha' : p.tea_type + ' Tea' %><% if (p.flavor) { %> | <%= p.flavor %><% } %></div>
+            <div class="stars">
+              <%- stars(p.avg_rating) %> <span class="count">(<%= p.review_count %>)</span>
+            </div>
+            <form class="card-foot" action="/cart/add" method="post">
+              <span class="price">$<%= parseFloat(p.price).toFixed(2) %></span>
+              <% if (p.stock_qty > 0) { %>
+                <input type="hidden" name="product_id" value="<%= p.product_id %>">
+                <input type="hidden" name="qty" value="1">
+                <button class="btn" type="submit">Add to Cart</button>
+              <% } else { %>
+                <button class="btn" type="button" disabled style="background:var(--muted);cursor:default">Out of stock</button>
+              <% } %>
+            </form>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+    <% } %>
+  </section>
+
+</main>
+
+<%- include('partials/footer') %>
+</body>
+</html>

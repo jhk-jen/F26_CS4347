@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin">
+  <%- include('../partials/admin-sidebar', { active, user }) %>
+  <main class="admin-main">
+    <div class="admin-top">
+      <div>
+        <h1>Sales Report</h1>
+        <p>Aggregated from the <code>v_sales_by_tea_type</code> view (GROUP BY tea_type).</p>
+      </div>
+    </div>
+
+    <section class="panels">
+
+      <div class="panel">
+        <div class="panel-head"><div>
+          <h2>Revenue by Tea Type</h2>
+          <p>Non-cancelled orders only. Powered by <code>v_sales_by_tea_type</code> VIEW.</p>
+        </div></div>
+        <table>
+          <thead><tr><th>Tea Type</th><th>Orders</th><th>Units Sold</th><th>Revenue</th></tr></thead>
+          <tbody>
+            <% salesByType.forEach(r => { %>
+              <tr>
+                <td><strong><%= r.tea_type %></strong></td>
+                <td><%= r.order_count %></td>
+                <td><%= r.total_units %></td>
+                <td>$<%= parseFloat(r.total_revenue).toFixed(2) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><div>
+          <h2>Top Products by Revenue</h2>
+          <p>GROUP BY product, excluding Cancelled orders.</p>
+        </div></div>
+        <table>
+          <thead><tr><th>Product</th><th>Type</th><th>Units</th><th>Revenue</th></tr></thead>
+          <tbody>
+            <% topProducts.forEach(r => { %>
+              <tr>
+                <td><strong><%= r.p_name %></strong></td>
+                <td><%= r.tea_type %></td>
+                <td><%= r.total_units %></td>
+                <td>$<%= parseFloat(r.total_revenue).toFixed(2) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+  </main>
+</div>
+</body>
+</html>

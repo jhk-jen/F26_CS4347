@@ -1,0 +1,48 @@
+<%- include('partials/header', { title, navActive: '' }) %>
+<%- include('partials/flash') %>
+
+<main class="product-page">
+  <h1 style="font-size:40px;margin-bottom:24px">Checkout</h1>
+
+  <div style="display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start">
+
+    <div>
+      <h2 style="font-size:24px;margin-bottom:16px">Order Summary</h2>
+      <table>
+        <thead><tr><th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead>
+        <tbody>
+          <% cart.items.forEach(item => { %>
+            <tr>
+              <td><%= item.p_name %></td>
+              <td><%= item.qty %></td>
+              <td>$<%= item.price.toFixed(2) %></td>
+              <td>$<%= (item.price * item.qty).toFixed(2) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <div style="text-align:right;font-family:var(--serif);font-size:26px;margin-top:16px">
+        Total: $<%= cart.total.toFixed(2) %>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border-radius:var(--radius);padding:24px">
+      <h2 style="font-size:24px;margin-bottom:4px">Shipping to</h2>
+      <% if (user) { %>
+        <p style="color:var(--muted);margin:0 0 16px"><%= user.user_name %></p>
+      <% } %>
+      <form action="/checkout" method="post">
+        <p style="color:var(--muted);font-size:14px;margin-bottom:16px">
+          Your order will be placed with the address on your account. Payment is not collected for this demo.
+        </p>
+        <button class="btn btn-lg" type="submit" style="width:100%">Place Order</button>
+      </form>
+      <a href="/cart" style="display:block;text-align:center;margin-top:12px;color:var(--muted);font-size:14px">← Back to cart</a>
+    </div>
+
+  </div>
+</main>
+
+<%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<%- include('partials/header', { title, navActive: '' }) %>
+<%- include('partials/flash') %>
+
+<main class="product-page">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px">
+    <h1 style="font-size:40px">Order #<%= order.order_id %></h1>
+    <span class="pill <%= order.order_status === 'Pending' || order.order_status === 'Cancelled' ? 'warn' : '' %>">
+      <%= order.order_status %>
+    </span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:start;margin-bottom:32px">
+    <div>
+      <table>
+        <thead><tr><th>Product</th><th>Tea Type</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead>
+        <tbody>
+          <% items.forEach(i => { %>
+            <tr>
+              <td><a href="/product/<%= i.product_id %>" style="color:var(--green)"><%= i.p_name %></a></td>
+              <td><%= i.tea_type %></td>
+              <td><%= i.qty %></td>
+              <td>$<%= parseFloat(i.price_at_purchase).toFixed(2) %></td>
+              <td>$<%= (i.qty * parseFloat(i.price_at_purchase)).toFixed(2) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <div style="text-align:right;font-family:var(--serif);font-size:26px;margin-top:16px">
+        Total: $<%= total.toFixed(2) %>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border-radius:var(--radius);padding:20px">
+      <h2 style="font-size:20px;margin-bottom:12px">Order Details</h2>
+      <p style="margin:4px 0;font-size:14px"><strong>Date:</strong> <%= fmtDate(order.order_date) %></p>
+      <p style="margin:4px 0;font-size:14px"><strong>Customer:</strong> <%= order.user_name %></p>
+      <% if (order.address) { %><p style="margin:4px 0;font-size:14px"><strong>Address:</strong> <%= order.address %></p><% } %>
+    </div>
+  </div>
+
+  <a href="/orders" style="color:var(--muted);font-size:14px">← Back to my orders</a>
+</main>
+
+<%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<aside class="sidebar">
+  <a class="logo" href="/admin">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="#5c7353"><path d="M12 21C7 18 4 14 4 8c4 0 7 2 8 6 1-4 4-6 8-6 0 6-3 10-8 13z"/></svg>
+    <span>
+      <span class="logo-name">Leaf &amp; Brew</span><br>
+      <span class="logo-tag">Admin</span>
+    </span>
+  </a>
+  <nav class="side-nav">
+    <a class="<%= active === 'dashboard' ? 'active' : '' %>" href="/admin">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 11 12 3l9 8v10h-6v-6H9v6H3z"/></svg>
+      Dashboard
+    </a>
+    <a class="<%= active === 'orders' ? 'active' : '' %>" href="/admin/orders">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      Orders
+    </a>
+    <a class="<%= active === 'products' ? 'active' : '' %>" href="/admin/products">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>
+      Products
+    </a>
+    <a class="<%= active === 'users' ? 'active' : '' %>" href="/admin/users">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Users
+    </a>
+    <a class="<%= active === 'report' ? 'active' : '' %>" href="/admin/report">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20h18M5 20V10l7-7 7 7v10"/><path d="M9 20v-6h6v6"/></svg>
+      Sales Report
+    </a>
+  </nav>
+  <a class="<%= active === 'sqli' ? 'active' : '' %>" href="/sqli"
+     style="margin-top:auto;border-top:1px solid var(--line);padding-top:12px;font-size:13px;color:var(--muted)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>
+    SQL Injection Demo
+  </a>
+  <div style="padding:12px 18px;font-size:13px;color:var(--muted)">
+    Logged in as <strong><%= user.user_name %></strong><br>
+    <a href="/logout" style="color:var(--green)">Log out</a>
+    &nbsp;·&nbsp;
+    <a href="/" style="color:var(--green)">View shop</a>
+  </div>
+</aside>

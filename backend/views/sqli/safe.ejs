@@ -1,0 +1,88 @@
+<%- include('../partials/header', { title, navActive: '' }) %>
+
+<main class="product-page">
+  <div style="max-width:800px;margin:0 auto">
+
+    <div style="background:var(--green-soft);border-left:4px solid var(--green);padding:12px 18px;border-radius:8px;margin-bottom:20px">
+      <strong style="color:var(--green)">✓ SAFE VERSION — Parameterized Queries</strong><br>
+      <span style="font-size:13px;color:var(--text)">
+        User input is passed as separate bind parameters. MySQL's protocol handles escaping — the input is never interpreted as SQL syntax.
+      </span>
+    </div>
+
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:4px">
+      <h1 style="font-size:36px">Order Lookup</h1>
+      <span style="color:var(--green);font-size:14px;font-weight:700">SAFE VERSION</span>
+    </div>
+    <p style="color:var(--muted);margin-bottom:20px">
+      <a href="/sqli" style="color:var(--green)">← Demo home</a> &nbsp;|&nbsp;
+      <a href="/sqli/vulnerable" style="color:var(--amber)">Switch to vulnerable version →</a>
+    </p>
+
+    <form action="/sqli/safe" method="post" style="background:var(--surface);border-radius:var(--radius);padding:24px;margin-bottom:24px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <label style="display:grid;gap:4px;font-size:14px;color:var(--muted)">
+          Email
+          <input type="text" name="email" value="<%= email %>"
+                 placeholder="e.g. emily.tan@example.com"
+                 style="padding:10px 12px;border:1px solid var(--line);border-radius:8px">
+        </label>
+        <label style="display:grid;gap:4px;font-size:14px;color:var(--muted)">
+          Phone Number
+          <input type="text" name="phone" value="<%= phone %>"
+                 placeholder="e.g. (214) 848-7138"
+                 style="padding:10px 12px;border:1px solid var(--line);border-radius:8px">
+        </label>
+      </div>
+      <button class="btn" type="submit">Look Up Orders</button>
+    </form>
+
+    <% if (templateSQL !== null) { %>
+      <div style="margin-bottom:16px">
+        <h2 style="font-size:18px;margin-bottom:8px;color:var(--green)">SQL Template (never modified by user input)</h2>
+        <pre style="background:#2b2b26;color:#e6ece0;padding:16px;border-radius:8px;overflow-x:auto;font-size:13px;white-space:pre-wrap"><%= templateSQL %></pre>
+      </div>
+
+      <div style="margin-bottom:24px">
+        <h2 style="font-size:18px;margin-bottom:8px;color:var(--green)">Bound Values (passed separately to MySQL)</h2>
+        <pre style="background:#2b2b26;color:#e6ece0;padding:16px;border-radius:8px;font-size:13px"><%= JSON.stringify(boundValues, null, 2) %></pre>
+      </div>
+
+      <% if (dbError) { %>
+        <div style="background:var(--amber-soft);padding:12px 16px;border-radius:8px;color:var(--amber)">
+          <strong>Database Error:</strong> <%= dbError %>
+        </div>
+      <% } else if (results.length === 0) { %>
+        <div style="background:var(--green-soft);padding:12px 16px;border-radius:8px;color:var(--green-dark)">
+          <strong>No orders found</strong> — injection payload had no effect. Only an exact email + phone match returns rows.
+        </div>
+      <% } else { %>
+        <h2 style="font-size:18px;margin-bottom:12px">
+          Results — <strong style="color:var(--green)"><%= results.length %> row(s) returned</strong>
+        </h2>
+        <table>
+          <thead>
+            <tr><th>Order</th><th>Customer</th><th>Email</th><th>Phone</th><th>Date</th><th>Status</th><th>Items</th><th>Total</th></tr>
+          </thead>
+          <tbody>
+            <% results.forEach(r => { %>
+              <tr>
+                <td>#<%= r.order_id %></td>
+                <td><%= r.user_name %></td>
+                <td class="email"><%= r.email %></td>
+                <td><%= r.phone_no %></td>
+                <td><%= r.order_date %></td>
+                <td><span class="pill"><%= r.order_status %></span></td>
+                <td><%= r.item_count %></td>
+                <td>$<%= r.total ? parseFloat(r.total).toFixed(2) : '0.00' %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    <% } %>
+  </div>
+</main>
+
+</body>
+</html>

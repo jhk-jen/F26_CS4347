@@ -1,0 +1,31 @@
+<%- include('partials/header', { title, navActive: '' }) %>
+
+<main class="auth-page">
+  <div class="auth-card">
+    <h1>Log In</h1>
+    <% if (errors.length) { %>
+      <ul class="error-list">
+        <% errors.forEach(e => { %><li><%= e %></li><% }) %>
+      </ul>
+    <% } %>
+    <%- include('partials/flash') %>
+    <form action="/login" method="post">
+      <% if (next) { %><input type="hidden" name="next" value="<%= next %>"><% } %>
+      <label>Email *
+        <input type="email" name="email" value="<%= old.email || '' %>"
+               placeholder="you@example.com" required autocomplete="email">
+      </label>
+      <label>Password *
+        <input type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+      </label>
+      <button class="btn btn-lg" type="submit" style="width:100%">Log In</button>
+    </form>
+    <p style="text-align:center;margin-top:16px;color:var(--muted);font-size:14px">
+      New here? <a href="/register<%= next ? '?next=' + encodeURIComponent(next) : '' %>" style="color:var(--green)">Create an account</a>
+    </p>
+  </div>
+</main>
+
+<%- include('partials/footer') %>
+</body>
+</html>
