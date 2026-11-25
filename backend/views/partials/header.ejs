@@ -27,26 +27,5 @@
     <input type="search" name="q" placeholder="Search tea, flavors, or keywords…" maxlength="100"
            value="<%= locals.query ? locals.query.q || '' : '' %>">
   </form>
-  <div class="header-actions">
-    <% if (user) { %>
-      <a href="/account">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-        Hi, <%= user.user_name.split(' ')[0] %>
-      </a>
-      <a href="/orders">My Orders</a>
-      <% if (['Owner','Staff'].includes(user.user_type)) { %>
-        <a href="/admin">Admin</a>
-      <% } %>
-      <a href="/logout">Log Out</a>
-    <% } else { %>
-      <a href="/login">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-        Sign in
-      </a>
-    <% } %>
-    <a class="cart-link" href="/cart">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.4 11h11l2-8H6.2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
-      <span class="cart-badge"><%= cart.items.reduce(function(s,i){return s+i.qty;},0) %></span>
-    </a>
-  </div>
+  <%- include('user-nav', { user, cart, area: 'shop' }) %>
 </header>
