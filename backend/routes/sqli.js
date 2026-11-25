@@ -1,119 +1,109 @@
 'use strict';
 /*
- * Assignment 5 – SQL Injection Demo
+ * Assignment 5 – SQL Injection Demo (Order Lookup by email + phone), one page: /sqli
  *
- * /sqli/vulnerable  builds the ORDER LOOKUP query by directly concatenating user
- *   input into the SQL string and executes it with pool.query(). An attacker can
- *   inject SQL that bypasses the phone check or returns every row in the table.
+ * Prepared statements OFF -> lookupVulnerable(): the input is pasted into the SQL
+ *   string and run with sqliPool.query(sql). A quote in the input ends the string
+ *   literal early, so the rest of the input runs as SQL ("#" comments out the phone
+ *   check, "OR 1=1" matches every row).
  *
- * /sqli/safe  uses pool.execute() with ? placeholders. The mysql2 driver passes
- *   the values to MySQL as separate protocol parameters; they are never interpreted
- *   as SQL syntax, so the same payloads return 0 rows.
+ * Prepared statements ON  -> lookupSafe(): the SQL is fixed with ? placeholders and
+ *   the input is sent separately with sqliPool.execute(sql, [email, phone]). MySQL
+ *   treats the values as data only, so the same payloads match nothing.
  *
- * Both routes use the read-only leaf_sqli account (SELECT-only grants) so the
- * demo cannot accidentally modify or drop data even on the vulnerable route.
+ * Both use the read-only leaf_sqli account (SELECT only, multipleStatements off),
+ * so even the vulnerable path cannot change or drop data.
  */
-const router     = require('express').Router();
+const router       = require('express').Router();
 const { sqliPool } = require('../db');
 
-// Base query shared by both routes (column count must match if you try UNION injections)
-const BASE_SQL = `
-  SELECT o.order_id, u.user_name, u.email, u.phone_no,
-         o.order_date, o.order_status,
-         COUNT(oi.product_id)                     AS item_count,
-         ROUND(SUM(oi.qty * oi.price_at_purchase), 2) AS total
-  FROM Orders o
-  JOIN Users u ON o.user_id = u.user_id
-  LEFT JOIN OrderItem oi ON o.order_id = oi.order_id`;
+const BASE_SQL = `SELECT o.order_id, u.user_name, u.email, u.phone_no,
+       o.order_date, o.order_status,
+       COUNT(oi.product_id) AS item_count,
+       ROUND(SUM(oi.qty * oi.price_at_purchase), 2) AS total
+FROM Orders o
+JOIN Users u ON o.user_id = u.user_id
+LEFT JOIN OrderItem oi ON o.order_id = oi.order_id`;
+const GROUP_BY = `\nGROUP BY o.order_id, u.user_name, u.email, u.phone_no, o.order_date, o.order_status`;
 
-// ── GET /sqli — landing page ──────────────────────────────────
+// The three inputs used in the demo; one click fills the form and runs it.
+const PAYLOADS = [
+  { label: '1. Normal lookup',        email: 'olivia.martinez@example.com',   phone: '(214) 917-2915' },
+  { label: '2. Skip the phone check', email: "olivia.martinez@example.com' #", phone: '000' },
+  { label: '3. Return every order',   email: "x' OR 1=1 #",                    phone: '000' }
+];
+
+// ── Prepared statements OFF: INTENTIONALLY VULNERABLE ─────────
+async function lookupVulnerable(email, phone) {
+  const sql = BASE_SQL + `\nWHERE u.email = '${email}' AND u.phone_no = '${phone}'` + GROUP_BY;
+  const [rows] = await sqliPool.query(sql);           // runs the string exactly as built
+  return rows;
+}
+
+// ── Prepared statements ON: SAFE ──────────────────────────────
+async function lookupSafe(email, phone) {
+  const sql = BASE_SQL + `\nWHERE u.email = ? AND u.phone_no = ?` + GROUP_BY;
+  const [rows] = await sqliPool.execute(sql, [email, phone]);
+  return rows;
+}
+
+// Split the SQL into pieces so the view can highlight the user's input and strike
+// out what an injected "#" turned into a comment.
+function vulnerableSegments(email, phone) {
+  const parts = [
+    ['sql', BASE_SQL + "\nWHERE u.email = '"], ['input', email],
+    ['sql', "' AND u.phone_no = '"],           ['input', phone],
+    ['sql', "'" + GROUP_BY]
+  ];
+  const chars = [];
+  for (const [kind, text] of parts) for (const c of text) chars.push({ c, kind });
+  let inComment = false;
+  for (const ch of chars) {
+    if (ch.c === '\n') inComment = false;
+    else if (!inComment && ch.kind === 'input' && ch.c === '#') inComment = true;
+    if (inComment) ch.kind = 'comment';
+  }
+  const segs = [];
+  for (const ch of chars) {
+    const last = segs[segs.length - 1];
+    if (last && last.kind === ch.kind) last.text += ch.c; else segs.push({ kind: ch.kind, text: ch.c });
+  }
+  return segs;
+}
+
+function safeSegments() {
+  return [
+    { kind: 'sql', text: BASE_SQL + '\nWHERE u.email = ' }, { kind: 'param', text: '?' },
+    { kind: 'sql', text: ' AND u.phone_no = ' },            { kind: 'param', text: '?' },
+    { kind: 'sql', text: GROUP_BY }
+  ];
+}
+
 router.get('/', (req, res) => {
-  res.render('sqli/index', { title: 'SQL Injection Demo | Leaf & Brew' });
-});
-
-// ── GET /sqli/vulnerable — empty form ────────────────────────
-router.get('/vulnerable', (req, res) => {
-  res.render('sqli/vulnerable', {
-    title: 'Vulnerable Route | SQLi Demo',
-    results: null,
-    executedSQL: null,
-    email: '',
-    phone: ''
+  res.render('sqli/index', {
+    title: 'SQL Injection Demo | Leaf & Brew', payloads: PAYLOADS,
+    prepared: req.query.prepared === 'on', email: '', phone: '',
+    results: null, dbError: null, segments: null
   });
 });
 
-// ── POST /sqli/vulnerable ─────────────────────────────────────
-// INTENTIONALLY VULNERABLE: user input is spliced directly into the SQL string.
-router.post('/vulnerable', async (req, res) => {
-  const email = req.body.email || '';
-  const phone = req.body.phone || '';
-
-  // ⚠ NEVER do this in real code — string concatenation allows SQL injection.
-  const sql = BASE_SQL +
-    `\n  WHERE u.email = '${email}' AND u.phone_no = '${phone}'` +
-    `\n  GROUP BY o.order_id, u.user_name, u.email, u.phone_no, o.order_date, o.order_status`;
-
-  let results = [];
-  let dbError = null;
+router.post('/', async (req, res) => {
+  const email    = req.body.email || '';
+  const phone    = req.body.phone || '';
+  const prepared = req.body.prepared === 'on';
+  let results = [], dbError = null;
   try {
-    // pool.query() (not execute) so the injected string runs as-is.
-    const [rows] = await sqliPool.query(sql);
-    results = rows;
-  } catch (err) {
-    dbError = err.message;
-  }
-
-  res.render('sqli/vulnerable', {
-    title: 'Vulnerable Route | SQLi Demo',
-    results,
-    executedSQL: sql,
-    dbError,
-    email,
-    phone
+    results = prepared ? await lookupSafe(email, phone) : await lookupVulnerable(email, phone);
+  } catch (err) { dbError = err.message; }
+  res.render('sqli/index', {
+    title: 'SQL Injection Demo | Leaf & Brew', payloads: PAYLOADS,
+    prepared, email, phone, results, dbError,
+    segments: prepared ? safeSegments() : vulnerableSegments(email, phone)
   });
 });
 
-// ── GET /sqli/safe — empty form ───────────────────────────────
-router.get('/safe', (req, res) => {
-  res.render('sqli/safe', {
-    title: 'Safe Route | SQLi Demo',
-    results: null,
-    templateSQL: null,
-    boundValues: null,
-    email: '',
-    phone: ''
-  });
-});
-
-// ── POST /sqli/safe ───────────────────────────────────────────
-// SAFE: uses pool.execute() with ? placeholders — the driver never interpolates
-// user input into SQL syntax.
-router.post('/safe', async (req, res) => {
-  const email = req.body.email || '';
-  const phone = req.body.phone || '';
-
-  const templateSQL = BASE_SQL +
-    `\n  WHERE u.email = ? AND u.phone_no = ?` +
-    `\n  GROUP BY o.order_id, u.user_name, u.email, u.phone_no, o.order_date, o.order_status`;
-
-  let results = [];
-  let dbError = null;
-  try {
-    const [rows] = await sqliPool.execute(templateSQL, [email, phone]);
-    results = rows;
-  } catch (err) {
-    dbError = err.message;
-  }
-
-  res.render('sqli/safe', {
-    title: 'Safe Route | SQLi Demo',
-    results,
-    templateSQL,
-    boundValues: [email, phone],
-    dbError,
-    email,
-    phone
-  });
-});
+// Old links keep working.
+router.get('/vulnerable', (req, res) => res.redirect('/sqli'));
+router.get('/safe',       (req, res) => res.redirect('/sqli?prepared=on'));
 
 module.exports = router;

@@ -195,7 +195,7 @@ Expected:
    - Normal window → customer account (`sophia.chen@example.com`)
    - Private/Incognito window → Owner account (`emily.tan@example.com`)
    - This avoids logging out and in during the demo.
-3. **Pre-open tabs:** `/`, `/admin`, `/sqli/vulnerable`, `/sqli/safe`
+3. **Pre-open tabs:** `/`, `/admin`, `/sqli`
 4. **Keep in a note to copy-paste:**
    - Demo password: `password123`
    - SQLi payload 1: `olivia.martinez@example.com' #`
@@ -289,16 +289,24 @@ Attach a screenshot if the problem is visual.
 
 ### Assignment 5 — SQL Injection Demo
 
-| Route | Description |
-|-------|-------------|
-| `GET /sqli` | Landing page with demo payloads listed |
-| `GET/POST /sqli/vulnerable` | String-concat SQL — injection works; shows exact query |
-| `GET/POST /sqli/safe` | Prepared statements — injection fails; shows template + bound values |
+One page, `/sqli`: an Order Lookup form (email + phone) with a **Prepared statements ON/OFF** switch. Flipping the switch re-runs the same input.
 
-**Demo payloads** (use at `/sqli/vulnerable`, then at `/sqli/safe` to show the fix):
+| Switch | Code path | What the page shows |
+|--------|-----------|---------------------|
+| OFF | `lookupVulnerable()`: input concatenated into the SQL, `sqliPool.query(sql)` | the SQL MySQL ran, user input highlighted, `#`-commented part struck out |
+| ON  | `lookupSafe()`: `?` placeholders, `sqliPool.execute(sql, [email, phone])` | the fixed SQL with `?` and the values sent separately |
 
-| Email | Phone | Effect |
-|-------|-------|--------|
+`/sqli/vulnerable` and `/sqli/safe` redirect to `/sqli` (OFF / ON).
+
+**Demo payloads** (one-click buttons on the page):
+
+| Button | Email | Phone | OFF | ON |
+|--------|-------|-------|-----|----|
+| 1. Normal lookup | olivia.martinez@example.com | (214) 917-2915 | 7 orders | 7 orders |
+| 2. Skip the phone check | `olivia.martinez@example.com' #` | 000 | 7 orders | 0 rows |
+| 3. Return every order | `x' OR 1=1 #` | 000 | every order | 0 rows |
+
+-------|-------|--------|
 | `olivia.martinez@example.com' #` | (any wrong) | Returns Olivia's 7 orders without knowing her phone |
 | `x' OR 1=1 #` | (any) | Returns every order in the database |
 | olivia.martinez@example.com | (214) 917-2915 | Legitimate query — returns only her 7 orders |
