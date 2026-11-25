@@ -87,6 +87,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   border-bottom: 1px solid var(--line);
 }
 .logo { display: flex; align-items: center; gap: 10px; }
+.logo-mark { width: 40px; height: 40px; flex: none; display: block; }
 .logo-name { font-family: var(--serif); font-size: 28px; line-height: 1; }
 .logo-tag { font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; }
 .main-nav { display: flex; gap: 32px; }
