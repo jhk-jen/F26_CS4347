@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin">
+  <%- include('../partials/admin-sidebar', { active, user }) %>
+  <main class="admin-main">
+    <div class="admin-top">
+      <div>
+        <h1>Order #<%= order.order_id %></h1>
+        <p><a href="/admin/orders" style="color:var(--muted)">← Back to orders</a></p>
+      </div>
+      <span class="pill <%= order.order_status==='Pending'||order.order_status==='Cancelled' ? 'warn' : '' %>">
+        <%= order.order_status %>
+      </span>
+    </div>
+
+    <%- include('../partials/flash') %>
+
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start">
+
+      <div class="panel">
+        <h2 style="font-size:22px;margin-bottom:14px">Items</h2>
+        <table>
+          <thead><tr><th>Product</th><th>Type</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead>
+          <tbody>
+            <% items.forEach(i => { %>
+              <tr>
+                <td><%= i.p_name %></td>
+                <td><%= i.tea_type %></td>
+                <td><%= i.qty %></td>
+                <td>$<%= parseFloat(i.price_at_purchase).toFixed(2) %></td>
+                <td>$<%= (i.qty * parseFloat(i.price_at_purchase)).toFixed(2) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <div style="text-align:right;font-family:var(--serif);font-size:24px;margin-top:12px">
+          Total: $<%= total.toFixed(2) %>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel" style="margin-bottom:16px">
+          <h2 style="font-size:20px;margin-bottom:12px">Customer</h2>
+          <p style="margin:4px 0"><strong><%= order.user_name %></strong></p>
+          <p style="margin:4px 0;color:var(--muted);font-size:14px"><%= order.email %></p>
+          <% if (order.phone_no) { %><p style="margin:4px 0;font-size:14px"><%= order.phone_no %></p><% } %>
+          <% if (order.address)  { %><p style="margin:4px 0;font-size:14px"><%= order.address %></p><% } %>
+          <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">Ordered: <%= fmtDate(order.order_date) %></p>
+        </div>
+
+        <div class="panel">
+          <h2 style="font-size:20px;margin-bottom:12px">Update Status</h2>
+          <% if (order.order_status === 'Cancelled') { %>
+            <p style="color:var(--amber);font-size:14px">This order has been cancelled and cannot be changed.</p>
+          <% } else { %>
+            <form action="/admin/orders/<%= order.order_id %>/status" method="post">
+              <label style="display:grid;gap:8px;font-size:14px;color:var(--muted)">
+                New Status
+                <select name="order_status"
+                  style="padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:#fff">
+                  <% statuses.filter(s => s !== 'Cancelled' || order.order_status !== 'Cancelled').forEach(s => { %>
+                    <option value="<%= s %>" <%= order.order_status === s ? 'selected' : '' %>><%= s %></option>
+                  <% }) %>
+                </select>
+              </label>
+              <button class="btn" type="submit" style="margin-top:12px;width:100%">Update Status</button>
+            </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

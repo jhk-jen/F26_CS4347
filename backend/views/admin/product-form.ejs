@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin">
+  <%- include('../partials/admin-sidebar', { active, user }) %>
+  <main class="admin-main">
+    <div class="admin-top">
+      <div>
+        <h1><%= product ? 'Edit Product' : 'New Product' %></h1>
+        <p><a href="/admin/products" style="color:var(--muted)">← Back to products</a></p>
+      </div>
+    </div>
+
+    <% if (errors.length) { %>
+      <ul class="error-list" style="margin-bottom:16px">
+        <% errors.forEach(e => { %><li><%= e %></li><% }) %>
+      </ul>
+    <% } %>
+
+    <div style="max-width:600px">
+      <form action="<%= product && product.product_id ? '/admin/products/' + product.product_id + '/update' : '/admin/products/create' %>" method="post" class="review-form">
+        <label>Product Name *
+          <input type="text" name="p_name" value="<%= product ? product.p_name || '' : '' %>"
+                 required maxlength="100" placeholder="e.g. Dragon Well Green Tea">
+        </label>
+        <label>Tea Type *
+          <select name="tea_type" required>
+            <option value="">Select type…</option>
+            <% ['Green','Black','Oolong','White','Herbal','Matcha','Pu-erh'].forEach(t => { %>
+              <option value="<%= t %>" <%= (product && product.tea_type === t) ? 'selected' : '' %>><%= t %></option>
+            <% }) %>
+          </select>
+        </label>
+        <label>Price ($) *
+          <input type="number" name="price" value="<%= product ? product.price || '' : '' %>"
+                 required min="0" step="0.01" placeholder="12.00">
+        </label>
+        <label>Stock Quantity *
+          <input type="number" name="stock_qty" value="<%= product ? product.stock_qty ?? '' : '' %>"
+                 required min="0" step="1" placeholder="0">
+        </label>
+        <label>Description <span style="font-size:12px;color:var(--muted)">(max 255 chars)</span>
+          <textarea name="description" rows="3" maxlength="255"
+                    placeholder="Brief description of the tea…"><%= product ? product.description || '' : '' %></textarea>
+        </label>
+        <div style="display:flex;gap:12px">
+          <button class="btn btn-lg" type="submit"><%= product && product.product_id ? 'Save Changes' : 'Create Product' %></button>
+          <a href="/admin/products" class="btn btn-lg" style="background:var(--soft);color:var(--text)">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin">
+  <%- include('../partials/admin-sidebar', { active, user }) %>
+  <main class="admin-main">
+    <div class="admin-top">
+      <div><h1>Users</h1><p>Registered accounts.</p></div>
+      <form class="search" action="/admin/users" method="get">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" name="q" value="<%= q %>" placeholder="Search name or email…" maxlength="100">
+      </form>
+    </div>
+
+    <%- include('../partials/flash') %>
+
+    <table>
+      <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Change Role</th><th>Delete</th></tr></thead>
+      <tbody>
+        <% users.forEach(u => { %>
+          <tr>
+            <td><%= u.user_id %></td>
+            <td><strong><%= u.user_name %></strong></td>
+            <td class="email"><%= u.email %></td>
+            <td><%= u.phone_no || '—' %></td>
+            <td>
+              <span class="pill <%= u.user_type === 'Owner' || u.user_type === 'Staff' ? 'dark' : '' %>">
+                <%= u.user_type %>
+              </span>
+            </td>
+            <td>
+              <% if (user.user_type === 'Owner' && u.user_id !== user.user_id) { %>
+                <form action="/admin/users/<%= u.user_id %>/role" method="post" style="display:flex;gap:6px;align-items:center">
+                  <select name="user_type"
+                    style="padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:13px">
+                    <% userTypes.forEach(t => { %>
+                      <option value="<%= t %>" <%= u.user_type === t ? 'selected' : '' %>><%= t %></option>
+                    <% }) %>
+                  </select>
+                  <button class="btn" style="font-size:12px;padding:5px 12px">Save</button>
+                </form>
+              <% } else if (u.user_id === user.user_id) { %>
+                <span style="color:var(--muted);font-size:13px">—</span>
+              <% } else { %>
+                <span style="color:var(--muted);font-size:13px">Owner only</span>
+              <% } %>
+            </td>
+            <td>
+              <% if (user.user_type === 'Owner' && u.user_id !== user.user_id) { %>
+                <form action="/admin/users/<%= u.user_id %>/delete" method="post"
+                      onsubmit="return confirm('Delete <%= u.user_name %>? This cannot be undone.')">
+                  <button class="btn" style="background:var(--amber);font-size:12px;padding:5px 12px">Delete</button>
+                </form>
+              <% } else if (u.user_id === user.user_id) { %>
+                <span style="color:var(--muted);font-size:13px" title="Cannot delete yourself">—</span>
+              <% } else { %>
+                <span style="color:var(--muted);font-size:13px">Owner only</span>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </main>
+</div>
+</body>
+</html>

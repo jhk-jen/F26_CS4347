@@ -1,0 +1,142 @@
+<%- include('partials/header', { title, navActive: 'shop' }) %>
+<%- include('partials/flash') %>
+
+<main class="product-page">
+
+  <section class="product-top">
+    <div>
+      <img class="gallery-main" src="/img/<%= gallery.main %>.jpg" alt="<%= product.p_name %>">
+      <div class="thumbs">
+        <% gallery.thumbs.forEach((t, i) => { %>
+          <img class="<%= i === 0 ? 'active' : '' %>" src="/img/<%= t %>.jpg" alt="<%= product.p_name %>">
+        <% }) %>
+      </div>
+    </div>
+
+    <div class="product-info">
+      <div class="eyebrow"><%= product.tea_type %></div>
+      <h1><%= product.p_name %></h1>
+      <div class="stars"><%- stars(product.avg_rating) %> <span class="count">(<%= product.review_count %> reviews)</span></div>
+      <span class="price">$<%= parseFloat(product.price).toFixed(2) %></span>
+      <p class="desc"><%= product.description %></p>
+      <div class="attrs">
+        <span><%= product.tea_type === 'Matcha' ? 'Matcha' : product.tea_type + ' Tea' %></span>
+        <% if ([1,2,3,4,5,6,7,8].includes(product.product_id)) { %>
+          <span>Organic</span>
+          <span>50g</span>
+        <% } %>
+        <% if (product.stock_qty > 0) { %>
+          <span style="color:var(--green)"><%= product.stock_qty %> in stock</span>
+        <% } else { %>
+          <span style="color:var(--amber)">Out of stock</span>
+        <% } %>
+      </div>
+
+      <% if (product.stock_qty > 0) { %>
+        <form class="buy-row" action="/cart/add" method="post">
+          <input type="hidden" name="product_id" value="<%= product.product_id %>">
+          <div>
+            <label for="qty">Quantity</label>
+            <input id="qty" type="number" name="qty" value="1" min="1" max="<%= product.stock_qty %>" required>
+          </div>
+          <button class="btn btn-lg" type="submit">Add to Cart</button>
+        </form>
+      <% } else { %>
+        <p style="color:var(--amber);margin-top:16px">Currently out of stock.</p>
+      <% } %>
+    </div>
+  </section>
+
+  <!-- Reviews list -->
+  <div class="section-head"><h2>Customer Reviews</h2></div>
+  <% if (reviews.length === 0) { %>
+    <p style="color:var(--muted)">No reviews yet. Be the first!</p>
+  <% } else { %>
+    <div class="review-grid">
+      <% reviews.forEach(r => { %>
+        <% const isOwn = user && user.user_id === r.user_id; %>
+        <article class="review" style="<%= isOwn ? 'border:2px solid var(--green);' : '' %>">
+          <div class="stars"><%- stars(r.rating_value) %></div>
+          <% if (r.review_title) { %><h3><%= r.review_title %></h3><% } %>
+          <% if (r.review_str) { %><p><%= r.review_str %></p><% } %>
+          <div class="review-foot">
+            <strong><%= r.user_name %><%= isOwn ? ' (you)' : '' %></strong>
+            <span><%= fmtDate(r.review_date) %></span>
+          </div>
+          <% if (isOwn) { %>
+            <form action="/product/<%= product.product_id %>/review/delete" method="post" style="margin-top:6px">
+              <button class="btn" style="background:var(--amber);font-size:12px;padding:4px 14px" type="submit"
+                onclick="return confirm('Delete your review?')">Delete my review</button>
+            </form>
+          <% } %>
+        </article>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <!-- Write / Edit review — 4 states -->
+  <% if (!user) { %>
+    <%/* State A: not logged in */%>
+    <div class="review-form" style="text-align:center;color:var(--muted)">
+      <p style="margin-bottom:12px">Want to leave a review?</p>
+      <a href="/login?next=/product/<%= product.product_id %>" class="btn">Log in to write a review</a>
+    </div>
+  <% } else if (!hasPurchased) { %>
+    <%/* State B: logged in but hasn't bought this product */%>
+    <div class="review-form" style="text-align:center;color:var(--muted)">
+      <p>Only customers who have purchased this product can leave a review.</p>
+    </div>
+  <% } else { %>
+    <%/* State C/D: purchased — show review form (pre-filled if they already reviewed) */%>
+    <form class="review-form" action="/product/<%= product.product_id %>/review" method="post">
+      <h3><%= myReview ? 'Edit Your Review' : 'Write a Review' %></h3>
+      <label>Rating *
+        <select name="rating_value" required>
+          <option value="">Choose a rating</option>
+          <% [5,4,3,2,1].forEach(v => { %>
+            <option value="<%= v %>" <%= myReview && myReview.rating_value == v ? 'selected' : '' %>>
+              <%= v %> – <%= ['','Bad','Poor','Okay','Good','Excellent'][v] %>
+            </option>
+          <% }) %>
+        </select>
+      </label>
+      <label>Title
+        <input type="text" name="review_title" maxlength="100"
+               placeholder="Sum it up in a few words"
+               value="<%= myReview ? myReview.review_title || '' : '' %>">
+      </label>
+      <label>Review
+        <textarea name="review_str" rows="4" maxlength="500"
+                  placeholder="What did you think?"><%= myReview ? myReview.review_str || '' : '' %></textarea>
+      </label>
+      <button class="btn" type="submit"><%= myReview ? 'Update Review' : 'Submit Review' %></button>
+    </form>
+  <% } %>
+
+  <!-- Related products -->
+  <% if (related.length > 0) { %>
+    <div class="section-head">
+      <h2>You May Also Like</h2>
+      <a class="link-arrow" href="/">View All →</a>
+    </div>
+    <div class="related">
+      <% related.forEach(r => { %>
+        <a class="mini-card" href="/product/<%= r.product_id %>">
+          <img src="/img/<%= r.img %>.jpg" alt="<%= r.p_name %>">
+          <div>
+            <h3><%= r.p_name %></h3>
+            <div class="meta"><%= r.tea_type %></div>
+            <div class="stars"><%- stars(r.avg_rating) %> <span class="count">(<%= r.review_count %>)</span></div>
+            <span class="price">$<%= parseFloat(r.price).toFixed(2) %></span>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  <% } %>
+
+</main>
+
+<script src="/js/gallery.js"></script>
+<%- include('partials/footer') %>
+</body>
+</html>
