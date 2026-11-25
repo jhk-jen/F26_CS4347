@@ -59,7 +59,7 @@ function stars(avg) {
   const r = Math.round((parseFloat(avg) || 0) * 2) / 2;
   let html = `<span class="star-row" role="img" aria-label="${r} out of 5 stars">`;
   for (let i = 1; i <= 5; i++) {
-    const cls = r >= i ? 'full' : (r >= i - 0.5 ? 'half' : 'empty');
+    const cls = r >= i ? 'st-full' : (r >= i - 0.5 ? 'st-half' : 'st-empty');
     html += `<span class="st ${cls}" aria-hidden="true">★</span>`;
   }
   return html + '</span>';

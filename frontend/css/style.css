@@ -54,8 +54,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .stars { color: var(--star); letter-spacing: 1px; }
 .star-row { display: inline-flex; gap: 1px; vertical-align: -1px; }
 .st { position: relative; display: inline-block; line-height: 1; color: #ddd5c4; }
-.st.full { color: var(--star); }
-.st.half::before { content: "★"; position: absolute; left: 0; top: 0; width: 50%; overflow: hidden; color: var(--star); }
+.st-full { color: var(--star); }
+.st-half::before { content: "★"; position: absolute; left: 0; top: 0; width: 50%; overflow: hidden; color: var(--star); }
 .count { color: var(--muted); font-size: 14px; }
 
 .pill {
