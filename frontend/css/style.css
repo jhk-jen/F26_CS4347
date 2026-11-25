@@ -105,13 +105,26 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* ---------- home ---------- */
 
 .hero {
+  position: relative;
+  overflow: hidden;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--soft) url("../img/hero.jpg") right center / auto 100% no-repeat;
+  background: var(--soft);
   min-height: 150px;
   padding: 0 64px;
 }
+/* Photo sits on the right and fades into the banner colour on its left edge. */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  aspect-ratio: 1800 / 605;
+  background: url("../img/hero.jpg") right center / cover no-repeat;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.6) 22%, #000 45%);
+          mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.6) 22%, #000 45%);
+}
+.hero > * { position: relative; z-index: 1; }
 .hero h1 { font-size: 60px; line-height: 1; }
 .hero p { margin: 8px 0 0; color: var(--muted); letter-spacing: 3px; font-size: 18px; }
 
