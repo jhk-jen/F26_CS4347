@@ -1,7 +1,7 @@
 'use strict';
 const router   = require('express').Router();
 const { pool } = require('../db');
-const { withImg, getGallery } = require('../helpers');
+const { withImg, getGallery, text } = require('../helpers');
 
 // Valid sort columns (whitelist — never interpolate user input directly into SQL)
 const SORT_MAP = {
@@ -15,7 +15,8 @@ const SORT_MAP = {
 // ── GET / — Shop page ─────────────────────────────────────────
 router.get('/', async (req, res, next) => {
   try {
-    const { q, sort } = req.query;
+    const q    = text(req.query.q);
+    const sort = text(req.query.sort);
     // tea_type can appear multiple times: ?tea_type=Green&tea_type=Black
     const teaTypes = req.query.tea_type
       ? [].concat(req.query.tea_type)
@@ -172,8 +173,8 @@ router.post('/product/:id/review', async (req, res, next) => {
     }
 
     const rating = parseInt(req.body.rating_value);
-    const title  = (req.body.review_title || '').trim().slice(0, 100);
-    const str    = (req.body.review_str   || '').trim().slice(0, 500);
+    const title  = text(req.body.review_title).trim().slice(0, 100);
+    const str    = text(req.body.review_str).trim().slice(0, 500);
 
     if (![1,2,3,4,5].includes(rating)) {
       req.session.flash = { type: 'error', msg: 'Rating must be between 1 and 5.' };

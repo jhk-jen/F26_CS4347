@@ -2,6 +2,7 @@
 const router           = require('express').Router();
 const { pool }         = require('../db');
 const { requireLogin } = require('../middleware/auth');
+const { text }         = require('../helpers');
 
 // ── GET /account ──────────────────────────────────────────────
 router.get('/account', requireLogin, async (req, res, next) => {
@@ -48,7 +49,9 @@ router.get('/account', requireLogin, async (req, res, next) => {
 // ── POST /account ─────────────────────────────────────────────
 router.post('/account', requireLogin, async (req, res, next) => {
   const uid = req.session.user.user_id;
-  const { user_name, phone_no, address } = req.body;
+  const user_name = text(req.body.user_name);
+  const phone_no  = text(req.body.phone_no);
+  const address   = text(req.body.address);
   const errors = [];
 
   if (!user_name || !user_name.trim()) errors.push('Full name is required.');

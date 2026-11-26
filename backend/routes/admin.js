@@ -1,7 +1,7 @@
 'use strict';
 const router             = require('express').Router();
 const { pool }           = require('../db');
-const { withImg }        = require('../helpers');
+const { withImg, text }  = require('../helpers');
 const { requireAdmin }   = require('../middleware/auth');
 
 // ── Auth guard ────────────────────────────────────────────────
@@ -86,7 +86,7 @@ router.get('/', async (req, res, next) => {
 // GET /admin/products
 router.get('/products', async (req, res, next) => {
   try {
-    const q = (req.query.q || '').trim();
+    const q = text(req.query.q).trim();
     const params = [];
     let where = '';
     if (q) {
@@ -118,7 +118,11 @@ router.get('/products/new', (req, res) => {
 
 // POST /admin/products/create
 router.post('/products/create', async (req, res, next) => {
-  const { p_name, tea_type, price, stock_qty, description } = req.body;
+  const p_name      = text(req.body.p_name);
+  const tea_type    = text(req.body.tea_type);
+  const price       = text(req.body.price);
+  const stock_qty   = text(req.body.stock_qty);
+  const description = text(req.body.description);
   const errors = [];
 
   if (!p_name   || !p_name.trim())   errors.push('Product name is required.');
@@ -181,7 +185,11 @@ router.get('/products/:id/edit', async (req, res, next) => {
 // POST /admin/products/:id/update
 router.post('/products/:id/update', async (req, res, next) => {
   const id = parseInt(req.params.id);
-  const { p_name, tea_type, price, stock_qty, description } = req.body;
+  const p_name      = text(req.body.p_name);
+  const tea_type    = text(req.body.tea_type);
+  const price       = text(req.body.price);
+  const stock_qty   = text(req.body.stock_qty);
+  const description = text(req.body.description);
   const errors = [];
 
   if (!p_name   || !p_name.trim())   errors.push('Product name is required.');
@@ -261,12 +269,32 @@ router.post('/products/:id/zero-stock', async (req, res, next) => {
 // ═══════════════════════════════════════════════════════════════
 
 const ORDER_STATUSES  = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
+
+// Allowed status changes. Orders only move forward. Cancelling is allowed only
+// before shipping, because it puts the items back into stock.
+// Delivered and Cancelled are final.
+const NEXT_STATUSES = {
+  Pending:    ['Processing', 'Shipped', 'Delivered', 'Cancelled'],
+  Processing: ['Shipped', 'Delivered', 'Cancelled'],
+  Shipped:    ['Delivered'],
+  Delivered:  [],
+  Cancelled:  []
+};
+function canMove(from, to) {
+  return (NEXT_STATUSES[from] || []).includes(to);
+}
+function blockedMsg(from, to) {
+  if (from === 'Cancelled') return 'Cancelled orders cannot be changed.';
+  if (from === 'Delivered') return 'Delivered orders are final and cannot be changed.';
+  if (to === 'Cancelled')   return `A ${from} order can no longer be cancelled.`;
+  return `An order can't go from ${from} back to ${to}.`;
+}
 const VALID_TEA_TYPES = ['Green', 'Black', 'Oolong', 'White', 'Herbal', 'Matcha', 'Pu-erh'];
 
 // GET /admin/orders
 router.get('/orders', async (req, res, next) => {
   try {
-    const status = req.query.status || '';
+    const status = text(req.query.status);
     const params = [];
     let where = '';
     if (status && ORDER_STATUSES.includes(status)) {
@@ -321,7 +349,8 @@ router.get('/orders/:id', async (req, res, next) => {
       order,
       items,
       total,
-      statuses: ORDER_STATUSES
+      statuses:     ORDER_STATUSES,
+      nextStatuses: NEXT_STATUSES[order.order_status] || []
     });
   } catch (err) { next(err); }
 });
@@ -352,9 +381,9 @@ router.post('/orders/:id/status', async (req, res, next) => {
         req.session.flash = { type: 'error', msg: 'Order not found.' };
         return res.redirect('/admin/orders');
       }
-      if (current.order_status === 'Cancelled') {
+      if (!canMove(current.order_status, 'Cancelled')) {
         await conn.rollback();
-        req.session.flash = { type: 'error', msg: 'Cancelled orders cannot be changed.' };
+        req.session.flash = { type: 'error', msg: blockedMsg(current.order_status, 'Cancelled') };
         return res.redirect(`/admin/orders/${oid}`);
       }
 
@@ -378,7 +407,7 @@ router.post('/orders/:id/status', async (req, res, next) => {
       conn.release();
     }
   } else {
-    // Non-cancel: still guard against re-activating a Cancelled order
+    // Non-cancel: only allow forward moves (see NEXT_STATUSES)
     try {
       const [[current]] = await pool.execute(
         'SELECT order_status FROM Orders WHERE order_id = ?', [oid]
@@ -387,13 +416,24 @@ router.post('/orders/:id/status', async (req, res, next) => {
         req.session.flash = { type: 'error', msg: 'Order not found.' };
         return res.redirect('/admin/orders');
       }
-      if (current.order_status === 'Cancelled') {
-        req.session.flash = { type: 'error', msg: 'Cancelled orders cannot be changed.' };
+      if (current.order_status === status) {
+        req.session.flash = { type: 'success', msg: `Order #${oid} is already ${status}.` };
         return res.redirect(`/admin/orders/${oid}`);
       }
-      await pool.execute(
-        'UPDATE Orders SET order_status = ? WHERE order_id = ?', [status, oid]
+      if (!canMove(current.order_status, status)) {
+        req.session.flash = { type: 'error', msg: blockedMsg(current.order_status, status) };
+        return res.redirect(`/admin/orders/${oid}`);
+      }
+      // Only update if the status is still what we just checked, so a Cancel
+      // that commits in between can't be overwritten.
+      const [result] = await pool.execute(
+        'UPDATE Orders SET order_status = ? WHERE order_id = ? AND order_status = ?',
+        [status, oid, current.order_status]
       );
+      if (result.affectedRows === 0) {
+        req.session.flash = { type: 'error', msg: 'This order was changed by someone else. Please try again.' };
+        return res.redirect(`/admin/orders/${oid}`);
+      }
     } catch (err) { return next(err); }
   }
 
@@ -410,7 +450,7 @@ const USER_TYPES = ['Customer', 'Staff', 'Owner'];
 // GET /admin/users
 router.get('/users', async (req, res, next) => {
   try {
-    const q = (req.query.q || '').trim();
+    const q = text(req.query.q).trim();
     const params = [];
     let where = '';
     if (q) {

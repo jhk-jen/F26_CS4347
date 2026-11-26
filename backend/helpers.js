@@ -84,4 +84,10 @@ function recalcCart(cart) {
   return { items, total };
 }
 
-module.exports = { IMG_SLUG, FLAVOR, withImg, getGallery, stars, price, fmtDate, recalcCart };
+// Form and query values are normally strings, but "?q=a&q=b" or "email[]=x"
+// arrive as arrays or objects. Anything that isn't a string becomes ''.
+function text(v) {
+  return typeof v === 'string' ? v : '';
+}
+
+module.exports = { IMG_SLUG, FLAVOR, withImg, getGallery, stars, price, fmtDate, recalcCart, text };

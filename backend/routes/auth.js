@@ -2,19 +2,21 @@
 const router   = require('express').Router();
 const bcrypt   = require('bcryptjs');
 const { pool } = require('../db');
+const { text } = require('../helpers');
 
 // ── GET /login ────────────────────────────────────────────────
 router.get('/login', (req, res) => {
   if (req.session.user) return res.redirect('/');
-  const next = req.query.next || '';
+  const next = text(req.query.next);
   res.render('login', { title: 'Log In', errors: [], old: {}, next });
 });
 
 // ── POST /login ───────────────────────────────────────────────
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const email    = text(req.body.email);
+  const password = text(req.body.password);
   // next param comes from a hidden field in the form
-  const nextRaw  = (req.body.next || '').trim();
+  const nextRaw  = text(req.body.next).trim();
   // Only allow relative paths — ignore anything that starts with // or a scheme
   const nextSafe = /^\/(?![\/\\])/.test(nextRaw) ? nextRaw : '';
   const errors   = [];
@@ -76,14 +78,19 @@ router.post('/login', async (req, res) => {
 // ── GET /register ─────────────────────────────────────────────
 router.get('/register', (req, res) => {
   if (req.session.user) return res.redirect('/');
-  const next = req.query.next || '';
+  const next = text(req.query.next);
   res.render('register', { title: 'Create Account', errors: [], old: {}, next });
 });
 
 // ── POST /register ────────────────────────────────────────────
 router.post('/register', async (req, res) => {
-  const { user_name, email, password, confirm_password, address, phone_no } = req.body;
-  const nextRaw  = (req.body.next || '').trim();
+  const user_name        = text(req.body.user_name);
+  const email            = text(req.body.email);
+  const password         = text(req.body.password);
+  const confirm_password = text(req.body.confirm_password);
+  const address          = text(req.body.address);
+  const phone_no         = text(req.body.phone_no);
+  const nextRaw  = text(req.body.next).trim();
   const nextSafe = /^\/(?![\/\\])/.test(nextRaw) ? nextRaw : '';
   const errors = [];
 

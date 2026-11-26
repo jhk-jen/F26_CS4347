@@ -62,17 +62,23 @@
           <h2 style="font-size:20px;margin-bottom:12px">Update Status</h2>
           <% if (order.order_status === 'Cancelled') { %>
             <p style="color:var(--amber);font-size:14px">This order has been cancelled and cannot be changed.</p>
+          <% } else if (!nextStatuses.length) { %>
+            <p style="color:var(--muted);font-size:14px">This order has been delivered. Its status is final.</p>
           <% } else { %>
-            <form action="/admin/orders/<%= order.order_id %>/status" method="post">
+            <form action="/admin/orders/<%= order.order_id %>/status" method="post"
+                  onsubmit="return this.order_status.value !== 'Cancelled' || confirm('Cancel this order? Its items go back into stock, and this cannot be undone.')">
               <label style="display:grid;gap:8px;font-size:14px;color:var(--muted)">
                 New Status
                 <select name="order_status"
                   style="padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:#fff">
-                  <% statuses.filter(s => s !== 'Cancelled' || order.order_status !== 'Cancelled').forEach(s => { %>
-                    <option value="<%= s %>" <%= order.order_status === s ? 'selected' : '' %>><%= s %></option>
+                  <% nextStatuses.forEach(s => { %>
+                    <option value="<%= s %>"><%= s %></option>
                   <% }) %>
                 </select>
               </label>
+              <% if (!nextStatuses.includes('Cancelled')) { %>
+                <p style="color:var(--muted);font-size:13px;margin-top:8px">Shipped orders can't be cancelled.</p>
+              <% } %>
               <button class="btn" type="submit" style="margin-top:12px;width:100%">Update Status</button>
             </form>
           <% } %>

@@ -3,6 +3,7 @@ require('dotenv').config();
 
 const path    = require('path');
 const express = require('express');
+require('./async-errors'); // send async handler errors to the error page instead of crashing
 const session = require('express-session');
 const { pool } = require('./db');
 const { stars, price, fmtDate } = require('./helpers');
